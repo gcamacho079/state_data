@@ -26,38 +26,39 @@ var permits = {
 
   getStateInfo: function(state) {
     let statePrefix = state.toLowerCase();
-    $.ajax("js/stateinfonew.json", { //CHANGED
+    $.ajax("js/stateinfonew.json", {
       dataType: "json",
       type: "GET",
       success: function(data) {
-        permits.buildOut(statePrefix, data[statePrefix].state, data[statePrefix]); //UPDATED FIELDS
+        permits.buildOut(statePrefix, data[statePrefix].state, data[statePrefix]);
       }
-    }); //End state info call
+    });
   },
 
   buildOut: function(prefix, stateName, data) {
-    let countyListItem = "";
-    let mapStructure = "<h2 style='text-align: center;' class='map-info-container'></h2><div class='col-sm-3'><h3>Counties</h3><ul class='nav nav-pills nav-stacked county-list'></ul></div><div class='col-sm-9 tab-content city-list'></div>";
+    let stackedStructure = "<h4 class='state-heading'>" + stateName + "</h4>"; //+ "<a href='" + state.URL + "' target='_blank'>" + state.Name + "</a>" + "<p>" + state.Description + "</p>";
+    let mapStructure = "<h2 style='text-align: center;' id='map__state-heading'></h2><div class='row'><div class='col-sm-3'><h3>Counties</h3><ul class='nav nav-pills nav-stacked map__county-list'></ul></div><div class='col-sm-9 tab-content map__city-list'></div></div>";
     $(".info-container").append(mapStructure);
+    $(".info-container").append(stackedStructure);
 
     data.counties.forEach(function(county) {
       let countyLink = prefix + "_" + county.name.toLowerCase();
       countyLink = countyLink.split(' ').join('');
-      countyLink = countyLink.split("'").join(''); //ADDED
-      countyLink = countyLink.split(".").join(''); //ADDED
+      countyLink = countyLink.split("'").join('');
+      countyLink = countyLink.split(".").join('');
 
       // Create Stacked
       let stackedInfo = "";
 
       // Create Full-Width
-      $(".map-info-container").text(stateName);
-      $(".county-list").append('<li><a data-toggle="tab" href="#' + countyLink + '">' + county.name + ' County</a></li>');
-      $(".city-list").append("<div class='tab-pane fade in' id='" + countyLink + "'><h3>Cities</h3><ul></ul></div>");
+      $("#map__state-heading").text(stateName);
+      $(".map__county-list").append('<li><a data-toggle="tab" href="#' + countyLink + '">' + county.name + ' County</a></li>');
+      $(".map__city-list").append("<div class='tab-pane fade in' id='" + countyLink + "'><h3>Cities</h3><ul></ul></div>");
       county.cities.forEach(function(city) {
         $("#" + countyLink + " ul").append("<li><a target='_blank' href='" + city.url + "'>" + city.name + "</a></li>");
       });
-      $(".county-list li:first-child").addClass("active");
-      $(".city-list div:first-child").addClass("active");
+      $(".map__county-list li:first-child").addClass("active");
+      $(".map__city-list div:first-child").addClass("active");
     });
 
 

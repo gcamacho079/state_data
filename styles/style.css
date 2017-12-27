@@ -44,3 +44,11 @@ color: #2b618e;
 #info-container {
     margin-top: 2em;
 }
+
+.state-heading {
+    background-color: #337ab7;
+    margin-top: 1em;
+    color: #ffffff;
+    border-radius: 3px;
+    padding: .5em;
+}
