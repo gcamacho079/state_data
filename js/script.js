@@ -2,8 +2,7 @@ var permits = {
 
   onReady: function() {
     $("path, circle").click(function(e) {
-      $(".county-list").empty();
-      $(".city-list").empty();
+      $(".info-container").empty();
       permits.getStateInfo($(this).attr("id"));
     });
 
@@ -38,6 +37,8 @@ var permits = {
 
   buildOut: function(prefix, stateName, data) {
     let countyListItem = "";
+    let mapStructure = "<h2 style='text-align: center;' class='map-info-container'></h2><div class='col-sm-3'><h3>Counties</h3><ul class='nav nav-pills nav-stacked county-list'></ul></div><div class='col-sm-9 tab-content city-list'></div>";
+    $(".info-container").append(mapStructure);
 
     data.counties.forEach(function(county) {
       let countyLink = prefix + "_" + county.name.toLowerCase();
@@ -47,11 +48,11 @@ var permits = {
 
       // Create Stacked
       let stackedInfo = "";
-      countyListItem = '<li><a data-toggle="tab" href="#' + countyLink + '">' + county.name + ' County</a></li>';
 
       // Create Full-Width
-      $(".county-list").append(countyListItem);
-      $(".city-list").append("<div class='tab-pane fade in' id='" + countyLink + "'><ul></ul></div>");
+      $(".map-info-container").text(stateName);
+      $(".county-list").append('<li><a data-toggle="tab" href="#' + countyLink + '">' + county.name + ' County</a></li>');
+      $(".city-list").append("<div class='tab-pane fade in' id='" + countyLink + "'><h3>Cities</h3><ul></ul></div>");
       county.cities.forEach(function(city) {
         $("#" + countyLink + " ul").append("<li><a target='_blank' href='" + city.url + "'>" + city.name + "</a></li>");
       });
