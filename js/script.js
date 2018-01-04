@@ -10,8 +10,15 @@ var permits = {
       type: "GET",
       success: function(data) {
         $("#loadingDiv").hide();
-        permits.createMapFunctionality(data);
-        permits.buildMobileView(data);
+
+        if ($(window).width() < 1280) {
+          permits.buildMobileView(data);
+          $(".info-container-stacked").show();
+        }
+        else {
+          permits.createMapFunctionality(data);
+          $("#us-map").show();
+        }
       }
     });
   },
@@ -64,6 +71,29 @@ var permits = {
 
   buildDesktopView: function(data) {
     console.log(data);
+    let countyListItem = "";
+    let mapStructure = "<h2 style='text-align: center;' class='map-info-container'></h2><div class='col-sm-3'><h3>Counties</h3><ul class='nav nav-pills nav-stacked county-list'></ul></div><div class='col-sm-9 tab-content city-list'></div>";
+    $(".info-container-map").append(mapStructure);
+
+    let statePrefix = data.acronym;
+    let stateName = data.name;
+
+    data.counties.forEach(function(county) {
+      let countyLink = statePrefix + "_" + county.name.toLowerCase();
+      countyLink = countyLink.split(' ').join('');
+      countyLink = countyLink.split("'").join('');
+      countyLink = countyLink.split(".").join('');
+      console.log(countyLink);
+
+      $(".map-info-container").text(stateName);
+      $(".county-list").append('<li><a data-toggle="tab" href="#' + countyLink + '">' + county.name + ' County</a></li>');
+      $(".city-list").append("<div class='tab-pane fade in' id='" + countyLink + "'><h3>Cities</h3><ul class='fa-ul'></ul></div>");
+      county.cities.forEach(function(city) {
+        $("#" + countyLink + " ul").append("<li><i class='fa-li fa fa-chevron-right'></i><a class='city-link' target='_blank' href='" + city.url + "'>" + city.name + "</a></li>");
+      });
+      $(".county-list li:first-child").addClass("active");
+      $(".city-list div:first-child").addClass("active");
+    });
   }
 }
 
