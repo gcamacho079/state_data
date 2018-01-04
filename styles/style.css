@@ -1,3 +1,11 @@
+/**
+For building out stacked list
+**/
+
+#map-box {
+  display: none;
+}
+
 #us-map{
   display: block;
   top: 0;
@@ -51,4 +59,32 @@ color: #2b618e;
     color: #ffffff;
     border-radius: 3px;
     padding: .5em;
+}
+
+/*************
+ Loading Div
+ *************/
+#loadingDiv {
+	text-align: center;
+}
+
+/*************
+ List View Styles
+ *************/
+.panel-group {
+	margin-bottom: 5px;
+}
+
+.state-panel {
+	background-color: #2c6fae;
+	padding: 7px 0px 7px 15px;
+}
+
+.state-panel a {
+	color: #ffffff;
+}
+
+.city-link {
+	display: block;
+	padding: .3em 1em;
 }
